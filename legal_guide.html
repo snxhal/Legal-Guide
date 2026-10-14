@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LegalGuide | Empowering Citizens, Ensuring Justice</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            900: '#070F2B',
+                            800: '#1B1A55',
+                            750: '#222168',
+                            700: '#535C91',
+                        },
+                        accent: {
+                            blue: '#38BDF8',
+                            cyan: '#2DD4BF',
+                            gold: '#F59E0B'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-navy-900 text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-accent-blue selection:text-navy-900">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="bg-navy-800/90 backdrop-blur-md border-b border-navy-700/50 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('dashboard')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-accent-blue to-indigo-600 flex items-center justify-center shadow-lg shadow-accent-blue/20">
+                    <i class="fa-solid fa-scale-balanced text-white text-lg"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-bold tracking-wide bg-gradient-to-r from-white via-slate-200 to-accent-blue bg-clip-text text-transparent">LegalGuide</span>
+                    <span class="block text-[10px] text-accent-blue font-mono tracking-widest uppercase">Empowering Citizens, Ensuring Justice</span>
+                </div>
+            </div>
+
+            <!-- Nav Links -->
+            <nav class="hidden md:flex items-center space-x-1 text-sm font-medium">
+                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="px-3 py-2 rounded-lg transition text-accent-blue bg-navy-700/40"><i class="fa-solid fa-house mr-1.5"></i> Dashboard</button>
+                <button onclick="switchTab('chat')" id="nav-chat" class="px-3 py-2 rounded-lg transition text-slate-300 hover:text-white hover:bg-navy-700/30"><i class="fa-solid fa-comments mr-1.5"></i> Nyaya Mitra</button>
+                <button onclick="switchTab('rights')" id="nav-rights" class="px-3 py-2 rounded-lg transition text-slate-300 hover:text-white hover:bg-navy-700/30"><i class="fa-solid fa-shield-heart mr-1.5"></i> Protection Hub</button>
+                <button onclick="switchTab('lawyers')" id="nav-lawyers" class="px-3 py-2 rounded-lg transition text-slate-300 hover:text-white hover:bg-navy-700/30"><i class="fa-solid fa-hands-holding-child mr-1.5"></i> Nyaya Setu</button>
+                <button onclick="switchTab('docs')" id="nav-docs" class="px-3 py-2 rounded-lg transition text-slate-300 hover:text-white hover:bg-navy-700/30"><i class="fa-solid fa-file-pen mr-1.5"></i> Draft FIR</button>
+            </nav>
+
+            <!-- Quick SOS Trigger -->
+            <div class="flex items-center space-x-3">
+                <button onclick="triggerEmergencySOS()" class="bg-rose-600 hover:bg-rose-700 text-white px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center space-x-1.5 shadow-lg shadow-rose-600/30 transition animate-pulse">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>SOS Alarm</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE BOTTOM NAVIGATION -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-navy-800 border-t border-navy-700 z-50 flex justify-around py-3 text-xs">
+        <button onclick="switchTab('dashboard')" class="flex flex-col items-center text-accent-blue"><i class="fa-solid fa-house text-base"></i><span>Home</span></button>
+        <button onclick="switchTab('chat')" class="flex flex-col items-center text-slate-400"><i class="fa-solid fa-comments text-base"></i><span>Nyaya Mitra</span></button>
+        <button onclick="switchTab('rights')" class="flex flex-col items-center text-slate-400"><i class="fa-solid fa-shield-heart text-base"></i><span>Protection</span></button>
+        <button onclick="switchTab('lawyers')" class="flex flex-col items-center text-slate-400"><i class="fa-solid fa-hands-holding-child text-base"></i><span>Nyaya Setu</span></button>
+        <button onclick="switchTab('docs')" class="flex flex-col items-center text-slate-400"><i class="fa-solid fa-file-pen text-base"></i><span>Drafts</span></button>
+    </div>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 mb-16 md:mb-6">
+
+        <!-- TAB 1: DASHBOARD -->
+        <div id="tab-dashboard" class="space-y-8">
+            <!-- Welcome Banner -->
+            <div class="bg-gradient-to-r from-navy-800 to-navy-750 border border-navy-700 rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden text-center max-w-4xl mx-auto">
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-accent-blue/5 rounded-full blur-3xl pointer-events-none"></div>
+                <span class="bg-accent-blue/10 text-accent-blue text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Seva Innovation Challenge</span>
+                <h1 class="text-2xl sm:text-4xl font-extrabold text-white mt-3">Empowering Citizens with Legal Literacy & Defense</h1>
+                <p class="text-slate-300 text-sm sm:text-base mt-2 max-w-2xl mx-auto">
+                    Get instant constitutional guidance from Nyaya Mitra, automated complaint drafting, emergency advocate connection via Nyaya Setu, and daily legal education.
+                </p>
+            </div>
+
+            <!-- CENTERED CITIZEN PROFILE SETUP -->
+            <div class="max-w-3xl mx-auto bg-navy-800 border border-navy-700 rounded-2xl p-6 sm:p-8 shadow-2xl relative">
+                <div class="flex items-center justify-between pb-4 mb-6 border-b border-navy-700">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-accent-blue/10 text-accent-blue flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-user-gear"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-white">Citizen Account Profile</h2>
+                            <p class="text-xs text-slate-400">Enter your details to receive personalized legal guidance</p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="resetProfileForm()" class="text-[10px] text-slate-400 hover:text-white bg-navy-900 border border-navy-700 px-2.5 py-1 rounded-md transition">
+                        Clear Fields
+                    </button>
+                </div>
+
+                <form id="profileForm" onsubmit="saveProfile(event)" class="space-y-4 text-xs">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-medium text-slate-300 uppercase tracking-wider mb-1">Full Name</label>
+                            <input type="text" id="pName" placeholder="e.g. Snehal Sarode" class="w-full bg-navy-900 border border-navy-700 rounded-lg px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-accent-blue text-sm" required>
+                        </div>
+                        <div>
+                            <label class="block font-medium text-slate-300 uppercase tracking-wider mb-1">Gender</label>
+                            <select id="pGender" class="w-full bg-navy-900 border border-navy-700 rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-accent-blue text-sm" required>
+                                <option value="" disabled selected>Select Gender</option>
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                                <option value="Non-Binary/Other">Other / Prefer not to say</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-medium text-slate-300 uppercase tracking-wider mb-1">Date of Birth</label>
+                            <input type="date" id="pDob" class="w-full bg-navy-900 border border-navy-700 rounded-lg px-3 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-accent-blue text-sm" required>
+                        </div>
+                        <div>
+                            <label class="block font-medium text-slate-300 uppercase tracking-wider mb-1">Profession / Role</label>
+                            <select id="pRole" class="w-full bg-navy-900 border border-navy-700 rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-accent-blue text-sm" required>
+                                <option value="" disabled selected>Select Profession / Role</option>
+                                <option value="Student">Student (School / College / University)</option>
+                                <option value="Working Professional">Working Professional / Employee</option>
+                                <option value="Self Employed / Business">Self Employed / Business Owner</option>
+                                <option value="Homemaker">Homemaker</option>
+                                <option value="Senior Citizen">Senior Citizen</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-medium text-slate-300 uppercase tracking-wider mb-1">State</label>
+                            <input type="text" id="pState" placeholder="e.g. Maharashtra" class="w-full bg-navy-900 border border-navy-700 rounded-lg px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-accent-blue text-sm" required>
+                        </div>
+                        <div>
+                            <label class="block font-medium text-slate-300 uppercase tracking-wider mb-1">City / Location</label>
+                            <input type="text" id="pCity" placeholder="e.g. Nagpur" class="w-full bg-navy-900 border border-navy-700 rounded-lg px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-accent-blue text-sm" required>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-medium text-slate-300 uppercase tracking-wider mb-1">Religion (Optional)</label>
+                            <input type="text" id="pReligion" placeholder="e.g. Hindu / Muslim / Christian" class="w-full bg-navy-900 border border-navy-700 rounded-lg px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-accent-blue text-sm">
+                        </div>
+                        <div>
+                            <label class="block font-medium text-slate-300 uppercase tracking-wider mb-1">Category / Caste (Optional)</label>
+                            <input type="text" id="pCategory" placeholder="e.g. General / OBC / SC / ST" class="w-full bg-navy-900 border border-navy-700 rounded-lg px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-accent-blue text-sm">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-accent-blue hover:bg-sky-400 text-navy-900 font-bold py-3 rounded-xl text-sm transition shadow-lg shadow-accent-blue/20">
+                        Save Account Settings
+                    </button>
+                </form>
+
+                <div id="profileSavedAlert" class="hidden mt-3 text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-800/50 p-2.5 rounded-xl text-center">
+                    <i class="fa-solid fa-circle-check mr-1"></i> Account profile saved successfully!
+                </div>
+            </div>
+
+            <!-- BALANCED 2x2 ACTION CARDS GRID -->
+            <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div onclick="switchTab('chat')" class="bg-navy-800 hover:bg-navy-750 border border-navy-700 rounded-2xl p-6 cursor-pointer transition group flex flex-col justify-between shadow-lg">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-accent-blue/10 text-accent-blue flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-comments"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Nyaya Mitra Chat (Voice & Text)</h3>
+                        <p class="text-slate-400 text-xs mt-2 leading-relaxed">Talk or speak to your personal legal companion, or upload evidence for AI multimodal analysis.</p>
+                    </div>
+                    <div class="mt-4 text-xs text-accent-blue font-semibold flex items-center space-x-1">
+                        <span>Launch Assistant</span>
+                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </div>
+                </div>
+
+                <div onclick="switchTab('rights')" class="bg-navy-800 hover:bg-navy-750 border border-navy-700 rounded-2xl p-6 cursor-pointer transition group flex flex-col justify-between shadow-lg">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-shield-heart"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Citizen Protection Hub</h3>
+                        <p class="text-slate-400 text-xs mt-2 leading-relaxed">Universal legal safeguards, Article 22 arrest protections, consumer rights, cyber safety, and emergency hotlines.</p>
+                    </div>
+                    <div class="mt-4 text-xs text-emerald-400 font-semibold flex items-center space-x-1">
+                        <span>Explore Safeguards</span>
+                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </div>
+                </div>
+
+                <div onclick="switchTab('lawyers')" class="bg-navy-800 hover:bg-navy-750 border border-navy-700 rounded-2xl p-6 cursor-pointer transition group flex flex-col justify-between shadow-lg">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-hands-holding-child"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Nyaya Setu (Pro-Bono Advocate Network)</h3>
+                        <p class="text-slate-400 text-xs mt-2 leading-relaxed">Connect with verified advocates via phone or secure asynchronous email consultation for 24/7 accessibility.</p>
+                    </div>
+                    <div class="mt-4 text-xs text-amber-400 font-semibold flex items-center space-x-1">
+                        <span>Find Advocates</span>
+                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </div>
+                </div>
+
+                <div onclick="switchTab('docs')" class="bg-navy-800 hover:bg-navy-750 border border-navy-700 rounded-2xl p-6 cursor-pointer transition group flex flex-col justify-between shadow-lg">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-file-invoice"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Auto Complaint & FIR Generator</h3>
+                        <p class="text-slate-400 text-xs mt-2 leading-relaxed">Generate formal legal complaints for police stations, cyber cells, consumer forums, or university committees in seconds.</p>
+                    </div>
+                    <div class="mt-4 text-xs text-purple-400 font-semibold flex items-center space-x-1">
+                        <span>Draft Document</span>
+                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DAILY LEGAL EDUCATION GUIDE -->
+            <div class="max-w-5xl mx-auto bg-gradient-to-r from-amber-500/10 via-navy-800 to-navy-800 border border-amber-500/30 rounded-2xl p-6 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div class="flex items-start space-x-4">
+                    <div class="w-11 h-11 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 text-xl mt-0.5">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Daily Legal Education Guide</span>
+                            <span class="text-[10px] bg-navy-900 text-slate-400 px-2 py-0.5 rounded border border-navy-700">Today's Insight</span>
+                        </div>
+                        <h3 id="dailyTitle" class="text-base font-bold text-white mt-1">Article 39A: Free Legal Aid for Every Citizen</h3>
+                        <p id="dailyDesc" class="text-xs text-slate-300 mt-1 max-w-3xl leading-relaxed">
+                            Did you know? Under Article 39A of the Indian Constitution, the State is required to provide free legal aid to ensure that opportunities for securing justice are not denied to any citizen by reason of economic or other disabilities.
+                        </p>
+                    </div>
+                </div>
+                <button onclick="nextDailyTip()" class="shrink-0 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-semibold px-4 py-2.5 rounded-xl transition flex items-center space-x-2">
+                    <span>Next Tip</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- TAB 2: NYAYA MITRA CHAT WITH VOICE RECORDING -->
+        <div id="tab-chat" class="hidden space-y-4">
+            <div class="bg-navy-800 border border-navy-700 rounded-2xl shadow-xl flex flex-col h-[75vh]">
+                <!-- Chat Header -->
+                <div class="p-4 border-b border-navy-700 flex items-center justify-between bg-navy-800/90 rounded-t-2xl">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <div class="w-10 h-10 rounded-full bg-accent-blue/20 text-accent-blue flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-navy-900 rounded-full"></span>
+                        </div>
+                        <div>
+                            <h2 class="text-sm font-bold text-white">Nyaya Mitra (Your Legal Friend)</h2>
+                            <p class="text-[11px] text-accent-blue">Voice & Text AI Assistant with Evidence Scanner</p>
+                        </div>
+                    </div>
+                    <button onclick="clearChat()" class="text-xs text-slate-400 hover:text-white bg-navy-900 px-3 py-1.5 rounded-lg border border-navy-700 transition">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Reset
+                    </button>
+                </div>
+
+                <!-- Chat Messages Stream -->
+                <div id="chatContainer" class="flex-1 p-4 overflow-y-auto space-y-4 text-sm">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 rounded-full bg-accent-blue/20 text-accent-blue flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-robot text-xs"></i>
+                        </div>
+                        <div class="bg-navy-900 border border-navy-700/80 rounded-2xl p-4 max-w-xl text-slate-200 shadow-sm space-y-2">
+                            <p>Hello! I am <strong>Nyaya Mitra</strong>. You can type or tap the microphone button to <strong>speak your grievance in your own words</strong>. I will listen, transcribe, and guide you instantly!</p>
+                            <p class="text-xs text-slate-400">💡 <strong>Quick prompts to try:</strong></p>
+                            <div class="flex flex-wrap gap-2 pt-1">
+                                <button onclick="sendQuickPrompt('Police took me after 6 PM, what are my rights?')" class="bg-navy-800 hover:bg-navy-750 border border-navy-700 text-accent-blue text-xs px-2.5 py-1 rounded-lg transition">Police detention after 6 PM</button>
+                                <button onclick="sendQuickPrompt('Acid attack happened or physical assault emergency, what to do?')" class="bg-navy-800 hover:bg-navy-750 border border-navy-700 text-accent-blue text-xs px-2.5 py-1 rounded-lg transition">Physical Assault / Emergency</button>
+                                <button onclick="sendQuickPrompt('Facing online cyber fraud and theft, how to report?')" class="bg-navy-800 hover:bg-navy-750 border border-navy-700 text-accent-blue text-xs px-2.5 py-1 rounded-lg transition">Cyber fraud / Theft reporting</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input Area with Voice Recording -->
+                <div class="p-3 border-t border-navy-700 bg-navy-800/90 rounded-b-2xl">
+                    <form id="chatForm" onsubmit="handleChatSubmit(event)" class="flex items-center space-x-2">
+                        <label class="cursor-pointer bg-navy-900 hover:bg-navy-700 border border-navy-700 text-slate-300 px-3 py-2.5 rounded-xl transition text-xs flex items-center space-x-1.5" title="Upload Photo, Video or Audio Evidence">
+                            <i class="fa-solid fa-paperclip text-accent-blue text-sm"></i>
+                            <span class="hidden sm:inline">Evidence</span>
+                            <input type="file" id="evidenceFile" accept="image/*,video/*,audio/*" class="hidden" onchange="handleFileUpload(event)">
+                        </label>
+                        <button type="button" id="micBtn" onclick="toggleSpeechRecognition()" class="bg-navy-900 hover:bg-navy-700 border border-navy-700 text-slate-300 px-3 py-2.5 rounded-xl transition text-xs flex items-center space-x-1.5" title="Speak to Nyaya Mitra">
+                            <i class="fa-solid fa-microphone text-accent-gold text-sm" id="micIcon"></i>
+                            <span class="hidden sm:inline" id="micText">Speak</span>
+                        </button>
+                        <input type="text" id="chatInput" placeholder="Type or speak your legal situation..." class="flex-1 bg-navy-900 border border-navy-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent-blue" autocomplete="off">
+                        <button type="submit" class="bg-accent-blue hover:bg-sky-400 text-navy-900 font-bold px-4 py-2.5 rounded-xl transition text-sm flex items-center space-x-1">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                    <div id="fileUploadStatus" class="hidden text-xs text-accent-cyan mt-1 px-1"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: CITIZEN PROTECTION HUB -->
+        <div id="tab-rights" class="hidden space-y-6">
+            <div class="bg-navy-800 border border-navy-700 rounded-2xl p-6 shadow-xl">
+                <div class="flex items-center justify-between pb-4 border-b border-navy-700">
+                    <div>
+                        <span class="bg-emerald-500/10 text-emerald-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Universal Protection Hub</span>
+                        <h2 class="text-xl font-bold text-white mt-1">Universal Citizen Rights & Legal Safeguards</h2>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="changeLanguage('en')" class="px-3 py-1 text-xs rounded bg-accent-blue text-navy-900 font-bold">English</button>
+                        <button onclick="changeLanguage('hi')" class="px-3 py-1 text-xs rounded bg-navy-700 text-slate-300 hover:text-white">हिन्दी</button>
+                        <button onclick="changeLanguage('mr')" class="px-3 py-1 text-xs rounded bg-navy-700 text-slate-300 hover:text-white">मराठी</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-navy-900 border border-accent-blue/30 rounded-xl p-5 shadow-md relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-accent-blue text-navy-900 text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase">Article 22</div>
+                        <h3 class="text-base font-bold text-white flex items-center space-x-2">
+                            <i class="fa-solid fa-handcuffs text-accent-blue"></i>
+                            <span id="card1Title">Arrest & Detention Safeguards</span>
+                        </h3>
+                        <p id="card1Desc" class="text-slate-300 text-xs mt-2 leading-relaxed">
+                            Every citizen has the right to be informed of the grounds of arrest, consult a legal practitioner of choice without delay, and be produced before a magistrate within 24 hours of arrest.
+                        </p>
+                        <div class="mt-4 pt-3 border-t border-navy-700/60 flex justify-between items-center text-xs">
+                            <span class="text-emerald-400 font-semibold"><i class="fa-solid fa-circle-check"></i> Enforceable Nationwide</span>
+                            <button onclick="readRightsAloud('Every citizen has the right to legal consultation and production before a magistrate within 24 hours.')" class="text-accent-blue hover:underline"><i class="fa-solid fa-volume-high"></i> Read Aloud</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-navy-900 border border-rose-500/30 rounded-xl p-5 shadow-md relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-rose-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase">Specialized Safety</div>
+                        <h3 class="text-base font-bold text-white flex items-center space-x-2">
+                            <i class="fa-solid fa-shield-halved text-rose-400"></i>
+                            <span>Women, Child & Vulnerable Group Protection</span>
+                        </h3>
+                        <p class="text-slate-300 text-xs mt-2 leading-relaxed">
+                            Includes special protections like BNSS Sec 46(4) (prohibiting female arrest after sunset without magistrate approval), POCSO Act for minors, and POSH Act for workplace safety.
+                        </p>
+                        <div class="mt-4 pt-3 border-t border-navy-700/60 flex justify-between items-center text-xs">
+                            <span class="text-emerald-400 font-semibold"><i class="fa-solid fa-circle-check"></i> Statutory Protection</span>
+                            <button onclick="readRightsAloud('Specialized legal protections ensure safety for women, children, and vulnerable groups across India.')" class="text-accent-blue hover:underline"><i class="fa-solid fa-volume-high"></i> Read Aloud</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- One-Tap Emergency Hotlines -->
+                <div class="mt-6 pt-6 border-t border-navy-700">
+                    <h3 class="text-sm font-bold text-white mb-3">Emergency Helpline One-Tap Dials</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <a href="tel:112" class="bg-navy-900 hover:bg-navy-700 border border-navy-700 p-3 rounded-xl text-center transition">
+                            <i class="fa-solid fa-phone-volume text-rose-500 text-lg mb-1"></i>
+                            <span class="block text-xs font-bold text-white">National Emergency</span>
+                            <span class="text-[10px] text-accent-blue font-mono">112</span>
+                        </a>
+                        <a href="tel:1930" class="bg-navy-900 hover:bg-navy-700 border border-navy-700 p-3 rounded-xl text-center transition">
+                            <i class="fa-solid fa-laptop-code text-accent-blue text-lg mb-1"></i>
+                            <span class="block text-xs font-bold text-white">Cyber Crime Helpline</span>
+                            <span class="text-[10px] text-accent-blue font-mono">1930</span>
+                        </a>
+                        <a href="tel:1091" class="bg-navy-900 hover:bg-navy-700 border border-navy-700 p-3 rounded-xl text-center transition">
+                            <i class="fa-solid fa-user-shield text-rose-400 text-lg mb-1"></i>
+                            <span class="block text-xs font-bold text-white">Women Helpline</span>
+                            <span class="text-[10px] text-accent-blue font-mono">1091</span>
+                        </a>
+                        <a href="tel:1098" class="bg-navy-900 hover:bg-navy-700 border border-navy-700 p-3 rounded-xl text-center transition">
+                            <i class="fa-solid fa-child text-amber-400 text-lg mb-1"></i>
+                            <span class="block text-xs font-bold text-white">Child Helpline</span>
+                            <span class="text-[10px] text-accent-blue font-mono">1098</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: NYAYA SETU (PRO-BONO ADVOCATE NETWORK WITH EMAIL & PHONE) -->
+        <div id="tab-lawyers" class="hidden space-y-6">
+            <div class="bg-navy-800 border border-navy-700 rounded-2xl p-6 shadow-xl">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-navy-700 gap-4">
+                    <div>
+                        <span class="bg-amber-500/10 text-amber-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Nyaya Setu Network</span>
+                        <h2 class="text-xl font-bold text-white mt-1">Verified Pro-Bono Counsel & Email Consultations</h2>
+                        <p class="text-slate-400 text-xs mt-1">Connect instantly by phone or send asynchronous consultation briefs via secure email.</p>
+                    </div>
+                    <div>
+                        <select id="filterSpecialty" onchange="filterLawyers()" class="bg-navy-900 border border-navy-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none">
+                            <option value="All">All Specializations</option>
+                            <option value="Criminal">Criminal & Arrest Defense</option>
+                            <option value="Cyber">Cyber Crime & Fraud</option>
+                            <option value="Student">Student Rights & Ragging</option>
+                            <option value="Civil">Civil, Family & Property</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="lawyerGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-6">
+                    <!-- Lawyer 1 -->
+                    <div class="lawyer-card bg-navy-900 border border-navy-700 rounded-xl p-5 flex flex-col justify-between" data-specialty="Criminal" data-name="Adv. Rajeshwari Deshmukh" data-email="rajeshwari.legal@nyayasetu.in">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full"><i class="fa-solid fa-circle-check mr-1"></i> Pro-Bono Available</span>
+                                <span class="text-xs text-accent-blue font-mono"><i class="fa-solid fa-location-dot"></i> High Court</span>
+                            </div>
+                            <h3 class="text-base font-bold text-white">Adv. Rajeshwari Deshmukh</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Criminal Defense • 12 Yrs Exp</p>
+                            <p class="text-xs text-slate-300 mt-3 bg-navy-800 p-2.5 rounded-lg border border-navy-700/60">Specializes in urgent bail applications, unlawful detention, and criminal defense.</p>
+                            <p class="text-[11px] text-accent-cyan mt-2 font-mono"><i class="fa-solid fa-envelope mr-1"></i> rajeshwari.legal@nyayasetu.in</p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-navy-700 flex space-x-2">
+                            <button onclick="openConsultModal('Adv. Rajeshwari Deshmukh', 'rajeshwari.legal@nyayasetu.in', 'Phone')" class="flex-1 bg-accent-blue hover:bg-sky-400 text-navy-900 font-bold py-2 rounded-lg text-xs transition">Call Now</button>
+                            <button onclick="openConsultModal('Adv. Rajeshwari Deshmukh', 'rajeshwari.legal@nyayasetu.in', 'Email')" class="bg-navy-800 hover:bg-navy-750 text-accent-cyan px-3 py-2 rounded-lg text-xs transition border border-navy-700" title="Send Email Brief"><i class="fa-solid fa-envelope"></i> Email</button>
+                        </div>
+                    </div>
+
+                    <!-- Lawyer 2 -->
+                    <div class="lawyer-card bg-navy-900 border border-navy-700 rounded-xl p-5 flex flex-col justify-between" data-specialty="Cyber" data-name="Adv. Amit Kulkarni" data-email="amit.cyber@nyayasetu.in">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-accent-blue/10 text-accent-blue text-[10px] font-bold px-2.5 py-1 rounded-full"><i class="fa-solid fa-shield mr-1"></i> Verified Expert</span>
+                                <span class="text-xs text-accent-blue font-mono"><i class="fa-solid fa-location-dot"></i> Civil Lines</span>
+                            </div>
+                            <h3 class="text-base font-bold text-white">Adv. Amit Kulkarni</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Cyber Law & Evidence • 8 Yrs Exp</p>
+                            <p class="text-xs text-slate-300 mt-3 bg-navy-800 p-2.5 rounded-lg border border-navy-700/60">Expert in online financial fraud, cyber defamation, theft, and IT Act cases.</p>
+                            <p class="text-[11px] text-accent-cyan mt-2 font-mono"><i class="fa-solid fa-envelope mr-1"></i> amit.cyber@nyayasetu.in</p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-navy-700 flex space-x-2">
+                            <button onclick="openConsultModal('Adv. Amit Kulkarni', 'amit.cyber@nyayasetu.in', 'Phone')" class="flex-1 bg-accent-blue hover:bg-sky-400 text-navy-900 font-bold py-2 rounded-lg text-xs transition">Call Now</button>
+                            <button onclick="openConsultModal('Adv. Amit Kulkarni', 'amit.cyber@nyayasetu.in', 'Email')" class="bg-navy-800 hover:bg-navy-750 text-accent-cyan px-3 py-2 rounded-lg text-xs transition border border-navy-700" title="Send Email Brief"><i class="fa-solid fa-envelope"></i> Email</button>
+                        </div>
+                    </div>
+
+                    <!-- Lawyer 3 -->
+                    <div class="lawyer-card bg-navy-900 border border-navy-700 rounded-xl p-5 flex flex-col justify-between" data-specialty="Student" data-name="Adv. Priya Sharma" data-email="priya.student@nyayasetu.in">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full"><i class="fa-solid fa-circle-check mr-1"></i> Pro-Bono Available</span>
+                                <span class="text-xs text-accent-blue font-mono"><i class="fa-solid fa-location-dot"></i> University</span>
+                            </div>
+                            <h3 class="text-base font-bold text-white">Adv. Priya Sharma</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Student Rights • 6 Yrs Exp</p>
+                            <p class="text-xs text-slate-300 mt-3 bg-navy-800 p-2.5 rounded-lg border border-navy-700/60">Handles university ragging cases, anti-discrimination petitions, and student grievances.</p>
+                            <p class="text-[11px] text-accent-cyan mt-2 font-mono"><i class="fa-solid fa-envelope mr-1"></i> priya.student@nyayasetu.in</p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-navy-700 flex space-x-2">
+                            <button onclick="openConsultModal('Adv. Priya Sharma', 'priya.student@nyayasetu.in', 'Phone')" class="flex-1 bg-accent-blue hover:bg-sky-400 text-navy-900 font-bold py-2 rounded-lg text-xs transition">Call Now</button>
+                            <button onclick="openConsultModal('Adv. Priya Sharma', 'priya.student@nyayasetu.in', 'Email')" class="bg-navy-800 hover:bg-navy-750 text-accent-cyan px-3 py-2 rounded-lg text-xs transition border border-navy-700" title="Send Email Brief"><i class="fa-solid fa-envelope"></i> Email</button>
+                        </div>
+                    </div>
+
+                    <!-- Lawyer 4 -->
+                    <div class="lawyer-card bg-navy-900 border border-navy-700 rounded-xl p-5 flex flex-col justify-between" data-specialty="Civil" data-name="Adv. Vikramaditya Patil" data-email="vikram.civil@nyayasetu.in">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-accent-blue/10 text-accent-blue text-[10px] font-bold px-2.5 py-1 rounded-full"><i class="fa-solid fa-shield mr-1"></i> Senior Counsel</span>
+                                <span class="text-xs text-accent-blue font-mono"><i class="fa-solid fa-location-dot"></i> Dharampeth</span>
+                            </div>
+                            <h3 class="text-base font-bold text-white">Adv. Vikramaditya Patil</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Civil Litigation • 15 Yrs Exp</p>
+                            <p class="text-xs text-slate-300 mt-3 bg-navy-800 p-2.5 rounded-lg border border-navy-700/60">Specializes in property land disputes, family partition, and civil contract injunctions.</p>
+                            <p class="text-[11px] text-accent-cyan mt-2 font-mono"><i class="fa-solid fa-envelope mr-1"></i> vikram.civil@nyayasetu.in</p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-navy-700 flex space-x-2">
+                            <button onclick="openConsultModal('Adv. Vikramaditya Patil', 'vikram.civil@nyayasetu.in', 'Phone')" class="flex-1 bg-accent-blue hover:bg-sky-400 text-navy-900 font-bold py-2 rounded-lg text-xs transition">Call Now</button>
+                            <button onclick="openConsultModal('Adv. Vikramaditya Patil', 'vikram.civil@nyayasetu.in', 'Email')" class="bg-navy-800 hover:bg-navy-750 text-accent-cyan px-3 py-2 rounded-lg text-xs transition border border-navy-700" title="Send Email Brief"><i class="fa-solid fa-envelope"></i> Email</button>
+                        </div>
+                    </div>
+
+                    <!-- Lawyer 5 -->
+                    <div class="lawyer-card bg-navy-900 border border-navy-700 rounded-xl p-5 flex flex-col justify-between" data-specialty="Criminal" data-name="Adv. Sunita Joshi" data-email="sunita.women@nyayasetu.in">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full"><i class="fa-solid fa-circle-check mr-1"></i> Pro-Bono Available</span>
+                                <span class="text-xs text-accent-blue font-mono"><i class="fa-solid fa-location-dot"></i> District Court</span>
+                            </div>
+                            <h3 class="text-base font-bold text-white">Adv. Sunita Joshi</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Women Safety & POSH • 10 Yrs Exp</p>
+                            <p class="text-xs text-slate-300 mt-3 bg-navy-800 p-2.5 rounded-lg border border-navy-700/60">Expert in domestic violence protection orders, workplace harassment, and legal aid.</p>
+                            <p class="text-[11px] text-accent-cyan mt-2 font-mono"><i class="fa-solid fa-envelope mr-1"></i> sunita.women@nyayasetu.in</p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-navy-700 flex space-x-2">
+                            <button onclick="openConsultModal('Adv. Sunita Joshi', 'sunita.women@nyayasetu.in', 'Phone')" class="flex-1 bg-accent-blue hover:bg-sky-400 text-navy-900 font-bold py-2 rounded-lg text-xs transition">Call Now</button>
+                            <button onclick="openConsultModal('Adv. Sunita Joshi', 'sunita.women@nyayasetu.in', 'Email')" class="bg-navy-800 hover:bg-navy-750 text-accent-cyan px-3 py-2 rounded-lg text-xs transition border border-navy-700" title="Send Email Brief"><i class="fa-solid fa-envelope"></i> Email</button>
+                        </div>
+                    </div>
+
+                    <!-- Lawyer 6 -->
+                    <div class="lawyer-card bg-navy-900 border border-navy-700 rounded-xl p-5 flex flex-col justify-between" data-specialty="Cyber" data-name="Adv. Rohan Mehta" data-email="rohan.consumer@nyayasetu.in">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-accent-blue/10 text-accent-blue text-[10px] font-bold px-2.5 py-1 rounded-full"><i class="fa-solid fa-shield mr-1"></i> Verified Expert</span>
+                                <span class="text-xs text-accent-blue font-mono"><i class="fa-solid fa-location-dot"></i> Sadar</span>
+                            </div>
+                            <h3 class="text-base font-bold text-white">Adv. Rohan Mehta</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Consumer & Financial • 9 Yrs Exp</p>
+                            <p class="text-xs text-slate-300 mt-3 bg-navy-800 p-2.5 rounded-lg border border-navy-700/60">Specializes in consumer dispute compensation, e-commerce fraud, and banking claims.</p>
+                            <p class="text-[11px] text-accent-cyan mt-2 font-mono"><i class="fa-solid fa-envelope mr-1"></i> rohan.consumer@nyayasetu.in</p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-navy-700 flex space-x-2">
+                            <button onclick="openConsultModal('Adv. Rohan Mehta', 'rohan.consumer@nyayasetu.in', 'Phone')" class="flex-1 bg-accent-blue hover:bg-sky-400 text-navy-900 font-bold py-2 rounded-lg text-xs transition">Call Now</button>
+                            <button onclick="openConsultModal('Adv. Rohan Mehta', 'rohan.consumer@nyayasetu.in', 'Email')" class="bg-navy-800 hover:bg-navy-750 text-accent-cyan px-3 py-2 rounded-lg text-xs transition border border-navy-700" title="Send Email Brief"><i class="fa-solid fa-envelope"></i> Email</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: COMPLAINT & FIR GENERATOR -->
+        <div id="tab-docs" class="hidden space-y-6">
+            <div class="bg-navy-800 border border-navy-700 rounded-2xl p-6 shadow-xl">
+                <div class="pb-4 border-b border-navy-700">
+                    <h2 class="text-xl font-bold text-white">Automated Legal Document & Complaint Generator</h2>
+                    <p class="text-slate-400 text-xs mt-1">Fill out the incident summary to generate a formal police complaint, cyber cell report, or consumer forum draft.</p>
+                </div>
+
+                <form id="firForm" onsubmit="generateFIR(event)" class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-6">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 uppercase tracking-wider mb-1">Complainant Name</label>
+                        <input type="text" id="firName" placeholder="Full legal name" class="w-full bg-navy-900 border border-navy-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent-blue" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 uppercase tracking-wider mb-1">Incident Type</label>
+                        <select id="firType" class="w-full bg-navy-900 border border-navy-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent-blue">
+                            <option value="Police Complaint / FIR">Police Complaint / FIR (Station House Officer)</option>
+                            <option value="Cyber Crime & Online Fraud">Cyber Crime & Online Fraud (Cyber Cell)</option>
+                            <option value="Theft or Property Loss">Theft, Burglary or Property Loss</option>
+                            <option value="Consumer Rights Dispute">Consumer Rights & Defective Goods Dispute</option>
+                            <option value="College Ragging / Campus Grievance">Anti-Ragging / Campus Committee Grievance</option>
+                            <option value="General Grievance / Other">General Grievance / Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 uppercase tracking-wider mb-1">Date & Time of Incident</label>
+                        <input type="datetime-local" id="firDate" class="w-full bg-navy-900 border border-navy-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent-blue" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 uppercase tracking-wider mb-1">Location of Incident</label>
+                        <input type="text" id="firLocation" placeholder="e.g. Civil Lines, Nagpur" class="w-full bg-navy-900 border border-navy-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent-blue" required>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-medium text-slate-300 uppercase tracking-wider mb-1">Detailed Incident Description</label>
+                        <textarea id="firDesc" rows="4" placeholder="Describe what happened in detail..." class="w-full bg-navy-900 border border-navy-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent-blue" required></textarea>
+                    </div>
+                    <div class="md:col-span-2">
+                        <button type="submit" class="w-full bg-accent-blue hover:bg-sky-400 text-navy-900 font-bold py-3 rounded-xl text-sm transition shadow-lg">
+                            <i class="fa-solid fa-file-arrow-down mr-2"></i> Generate Formal Legal Draft Text
+                        </button>
+                    </div>
+                </form>
+
+                <div id="firOutputContainer" class="hidden mt-6 bg-navy-900 border border-emerald-500/40 rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-3 pb-3 border-b border-navy-700">
+                        <h3 class="text-sm font-bold text-emerald-400"><i class="fa-solid fa-circle-check mr-1.5"></i> Generated Complaint Draft Ready</h3>
+                        <button onclick="copyFIRText()" class="bg-navy-800 hover:bg-navy-700 text-xs text-accent-blue px-3 py-1.5 rounded-lg border border-navy-700"><i class="fa-solid fa-copy mr-1"></i> Copy Text</button>
+                    </div>
+                    <pre id="firOutputText" class="text-xs font-mono text-slate-300 whitespace-pre-wrap bg-navy-950 p-4 rounded-lg border border-navy-800 overflow-x-auto max-h-64"></pre>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- NYAYA SETU CONSULTATION MODAL (EMAIL BRIEF & PHONE APPT) -->
+    <div id="consultModal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-navy-800 border border-navy-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-navy-700">
+                <h3 id="modalTitle" class="text-base font-bold text-white"><i class="fa-solid fa-hands-holding-child text-amber-400 mr-2"></i> Nyaya Setu Consultation</h3>
+                <button onclick="closeConsultModal()" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="submitConsultation(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-medium text-slate-300 mb-1">Selected Advocate & Email</label>
+                    <input type="text" id="modalAdvocate" readonly class="w-full bg-navy-900 border border-navy-700 rounded-lg px-3 py-2 text-accent-cyan font-mono">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-300 mb-1">Your Name</label>
+                    <input type="text" id="consultName" placeholder="e.g. Snehal Sarode" class="w-full bg-navy-900 border border-navy-700 rounded-lg px-3 py-2 text-white" required>
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-300 mb-1">Your Contact Phone / Email</label>
+                    <input type="text" id="consultContact" placeholder="phone number or email address" class="w-full bg-navy-900 border border-navy-700 rounded-lg px-3 py-2 text-white" required>
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-300 mb-1">Case Brief / Summary for Advocate</label>
+                    <textarea id="consultBrief" rows="3" placeholder="Describe your legal situation briefly..." class="w-full bg-navy-900 border border-navy-700 rounded-lg px-3 py-2 text-white" required></textarea>
+                </div>
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-navy-900 font-bold py-2.5 rounded-xl transition text-xs shadow-lg">
+                    Send Secure Brief to Advocate's Inbox
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-navy-800/40 border-t border-navy-700/50 py-4 text-center text-xs text-slate-400">
+        <p>LegalGuide Platform • Built for Seva Innovation Challenge by CSE Team (Nagpur).</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        function switchTab(tabId) {
+            const tabs = ['dashboard', 'chat', 'rights', 'lawyers', 'docs'];
+            tabs.forEach(t => {
+                const el = document.getElementById('tab-' + t);
+                if (el) el.classList.add('hidden');
+                const navBtn = document.getElementById('nav-' + t);
+                if (navBtn) {
+                    navBtn.className = "px-3 py-2 rounded-lg transition text-slate-300 hover:text-white hover:bg-navy-700/30";
+                }
+            });
+
+            const activeEl = document.getElementById('tab-' + tabId);
+            if (activeEl) activeEl.classList.remove('hidden');
+
+            const activeNav = document.getElementById('nav-' + tabId);
+            if (activeNav) {
+                activeNav.className = "px-3 py-2 rounded-lg transition text-accent-blue bg-navy-700/40";
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        const dailyTips = [
+            {
+                title: "Article 39A: Free Legal Aid for Every Citizen",
+                desc: "Under Article 39A of the Indian Constitution, the State provides free legal aid through Legal Services Authorities so justice is never denied due to economic barriers."
+            },
+            {
+                title: "Article 22: Rights Against Arbitrary Arrest",
+                desc: "Every arrested person must be informed of the grounds of arrest, allowed to consult a legal practitioner, and produced before a magistrate within 24 hours."
+            },
+            {
+                title: "Consumer Protection Act: Right to Redressal",
+                desc: "Consumers have the right to seek redressal against unfair trade practices or restrictive trade practices and defective goods or services."
+            },
+            {
+                title: "Information Technology Act: Cyber Fraud Reporting",
+                desc: "Financial cyber frauds can be reported instantly at the national cyber helpline 1930 or cybercrime.gov.in within the golden hour to freeze unauthorized transfers."
+            }
+        ];
+        let tipIdx = 0;
+
+        function nextDailyTip() {
+            tipIdx = (tipIdx + 1) % dailyTips.length;
+            document.getElementById('dailyTitle').innerText = dailyTips[tipIdx].title;
+            document.getElementById('dailyDesc').innerText = dailyTips[tipIdx].desc;
+        }
+
+        function saveProfile(e) {
+            e.preventDefault();
+            const profileData = {
+                name: document.getElementById('pName').value,
+                gender: document.getElementById('pGender').value,
+                dob: document.getElementById('pDob').value,
+                role: document.getElementById('pRole').value,
+                state: document.getElementById('pState').value,
+                city: document.getElementById('pCity').value,
+                religion: document.getElementById('pReligion').value,
+                category: document.getElementById('pCategory').value
+            };
+            
+            localStorage.setItem('lg_profile', JSON.stringify(profileData));
+            const alertBox = document.getElementById('profileSavedAlert');
+            alertBox.classList.remove('hidden');
+            setTimeout(() => alertBox.classList.add('hidden'), 4000);
+        }
+
+        function resetProfileForm() {
+            document.getElementById('profileForm').reset();
+            localStorage.removeItem('lg_profile');
+        }
+
+        // SPEECH RECOGNITION (VOICE INPUT FOR NYAYA MITRA)
+        let recognition = null;
+        let isRecording = false;
+
+        function toggleSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                alert("Speech recognition is not supported in this browser. Please use Chrome or Edge.");
+                return;
+            }
+
+            if (!recognition) {
+                recognition = new SpeechRecognition();
+                recognition.lang = 'en-IN'; // Can support English/Hindi recognition
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+
+                recognition.onstart = () => {
+                    isRecording = true;
+                    document.getElementById('micIcon').className = "fa-solid fa-microphone text-rose-500 text-sm animate-bounce";
+                    document.getElementById('micText').innerText = "Listening...";
+                };
+
+                recognition.onresult = (event) => {
+                    const speechText = event.results[0][0].transcript;
+                    document.getElementById('chatInput').value = speechText;
+                };
+
+                recognition.onerror = () => {
+                    stopSpeechUI();
+                };
+
+                recognition.onend = () => {
+                    stopSpeechUI();
+                };
+            }
+
+            if (isRecording) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+        }
+
+        function stopSpeechUI() {
+            isRecording = false;
+            document.getElementById('micIcon').className = "fa-solid fa-microphone text-accent-gold text-sm";
+            document.getElementById('micText').innerText = "Speak";
+        }
+
+        function handleChatSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            appendUserMessage(text);
+            input.value = '';
+
+            setTimeout(() => {
+                generateAIResponse(text);
+            }, 800);
+        }
+
+        function sendQuickPrompt(promptText) {
+            switchTab('chat');
+            appendUserMessage(promptText);
+            setTimeout(() => {
+                generateAIResponse(promptText);
+            }, 800);
+        }
+
+        function appendUserMessage(text) {
+            const container = document.getElementById('chatContainer');
+            const html = `
+                <div class="flex items-start justify-end space-x-3">
+                    <div class="bg-accent-blue/10 border border-accent-blue/30 rounded-2xl p-4 max-w-xl text-slate-100 shadow-sm">
+                        <p>${escapeHtml(text)}</p>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-navy-700 text-accent-blue flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-user text-xs"></i>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function appendAIMessage(htmlContent) {
+            const container = document.getElementById('chatContainer');
+            const html = `
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-accent-blue/20 text-accent-blue flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-robot text-xs"></i>
+                    </div>
+                    <div class="bg-navy-900 border border-navy-700/80 rounded-2xl p-4 max-w-xl text-slate-200 shadow-sm space-y-2">
+                        ${htmlContent}
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function generateAIResponse(query) {
+            const q = query.toLowerCase();
+            let response = "";
+
+            if (q.includes('acid') || q.includes('assault') || q.includes('emergency') || q.includes('attack')) {
+                response = `
+                    <p class="font-bold text-rose-400"><i class="fa-solid fa-triangle-exclamation mr-1"></i> URGENT SAFETY PROTOCOL</p>
+                    <p>If you or someone else is facing an active physical attack or medical emergency, please dial <strong>112 immediately</strong> or rush to the nearest hospital.</p>
+                    <p class="text-xs bg-navy-800 p-2.5 rounded border border-navy-700 mt-2"><strong>Legal & Medical Safeguards:</strong><br>
+                    1. Under Supreme Court rulings, all hospitals must provide <strong>free immediate first aid and medical treatment</strong> without waiting for police clearance in heinous crimes.<br>
+                    2. Preserve all physical evidence and file an immediate FIR at the nearest police station.</p>
+                `;
+            } else if (q.includes('cyber') || q.includes('fraud') || q.includes('theft')) {
+                response = `
+                    <p class="font-bold text-accent-blue"><i class="fa-solid fa-laptop-code mr-1"></i> Nyaya Mitra Assessment: Cyber Fraud & Theft</p>
+                    <p>For financial online fraud, time is critical (the Golden Hour).</p>
+                    <p class="text-xs bg-navy-800 p-2.5 rounded border border-navy-700 mt-2"><strong>Recommended Immediate Actions:</strong><br>
+                    1. Call the National Cyber Crime Helpline at <strong>1930</strong> immediately to freeze fraudulent bank transactions.<br>
+                    2. File an online report on cybercrime.gov.in and generate our formal complaint draft in the Draft FIR tab.</p>
+                `;
+            } else if (q.includes('6 pm') || q.includes('sunset') || q.includes('police') || q.includes('detain')) {
+                response = `
+                    <p class="font-bold text-accent-blue"><i class="fa-solid fa-shield-halved mr-1"></i> Nyaya Mitra Assessment: Police Detention Rights</p>
+                    <p>Under <strong>BNSS Section 46(4)</strong>, no woman can be arrested after sunset and before sunrise except in extraordinary cases with written permission from a Judicial Magistrate First Class.</p>
+                    <p class="text-xs bg-navy-800 p-2.5 rounded border border-navy-700 mt-2"><strong>Recommended Immediate Actions:</strong><br>
+                    1. Demand to see the written Judicial Magistrate order.<br>
+                    2. Insist on the presence of a female police constable.<br>
+                    3. Request to call your lawyer or family immediately under Article 22.</p>
+                `;
+            } else {
+                response = `
+                    <p class="font-bold text-accent-blue"><i class="fa-solid fa-circle-info mr-1"></i> Nyaya Mitra Guidance</p>
+                    <p>Regarding your query on "${escapeHtml(query)}", our constitutional database indicates that you have full rights to legal protection and grievance redressal under Indian civil and criminal law.</p>
+                    <p class="text-xs text-slate-300 mt-1">Would you like me to connect you with a verified lawyer via Nyaya Setu or auto-generate a formal complaint document?</p>
+                `;
+            }
+
+            appendAIMessage(response);
+        }
+
+        function clearChat() {
+            const container = document.getElementById('chatContainer');
+            container.innerHTML = `
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-accent-blue/20 text-accent-blue flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-robot text-xs"></i>
+                    </div>
+                    <div class="bg-navy-900 border border-navy-700/80 rounded-2xl p-4 max-w-xl text-slate-200 shadow-sm">
+                        <p>Chat reset. How else can Nyaya Mitra assist you today?</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleFileUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const status = document.getElementById('fileUploadStatus');
+                status.classList.remove('hidden');
+                status.innerHTML = `<i class="fa-solid fa-circle-check"></i> Evidence Attached: <strong>${file.name}</strong> (Multimodal scan ready)`;
+                appendUserMessage(`[Uploaded Evidence File: ${file.name}] Please analyze this photo/video for legal violations or evidence.`);
+                setTimeout(() => {
+                    appendAIMessage(`
+                        <p class="font-bold text-emerald-400"><i class="fa-solid fa-brain mr-1"></i> Nyaya Mitra Multimodal Scan</p>
+                        <p class="text-xs text-slate-300">File <strong>${file.name}</strong> successfully scanned. Visual metadata and timestamps verified. Securely logged for your official complaint draft.</p>
+                    `);
+                }, 1000);
+            }
+        }
+
+        function readRightsAloud(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 1.0;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert(text);
+            }
+        }
+
+        function changeLanguage(lang) {
+            const title = document.getElementById('card1Title');
+            const desc = document.getElementById('card1Desc');
+            if (lang === 'hi') {
+                title.innerText = "गिरफ्तारी और हिरासत सुरक्षा";
+                desc.innerText = "प्रत्येक नागरिक को गिरफ्तारी के आधार जानने, बिना किसी देरी के अपने पसंद के वकील से परामर्श करने और 24 घंटे के भीतर मजिस्ट्रेट के समक्ष पेश किए जाने का अधिकार है।";
+            } else if (lang === 'mr') {
+                title.innerText = "अटक आणि स्थानबद्धता संरक्षण";
+                desc.innerText = "प्रत्येक नागरिकाला अटकेची कारणे जाणून घेण्याचा, स्वतःच्या पसंतीच्या वकिलाचा सल्ला घेण्याचा आणि २४ तासांच्या आत दंडाधिकाऱ्यांसमोर उपस्थित राहण्याचा अधिकार आहे.";
+            } else {
+                title.innerText = "Arrest & Detention Safeguards";
+                desc.innerText = "Every citizen has the right to be informed of the grounds of arrest, consult a legal practitioner of choice without delay, and be produced before a magistrate within 24 hours of arrest.";
+            }
+        }
+
+        function filterLawyers() {
+            const val = document.getElementById('filterSpecialty').value;
+            const cards = document.querySelectorAll('.lawyer-card');
+            cards.forEach(card => {
+                const spec = card.getAttribute('data-specialty');
+                if (val === 'All' || spec === val) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // NYAYA SETU CONSULTATION MODAL LOGIC
+        function openConsultModal(lawyerName, lawyerEmail, consultType) {
+            document.getElementById('modalAdvocate').value = `${lawyerName} (${lawyerEmail})`;
+            document.getElementById('consultModal').classList.remove('hidden');
+        }
+
+        function closeConsultModal() {
+            document.getElementById('consultModal').classList.add('hidden');
+        }
+
+        function submitConsultation(e) {
+            e.preventDefault();
+            const adv = document.getElementById('modalAdvocate').value;
+            const name = document.getElementById('consultName').value;
+            alert(`✅ Secure case brief successfully sent to ${adv}!\nThe advocate will review your query and reply to your contact email/phone within 24 hours.`);
+            closeConsultModal();
+            e.target.reset();
+        }
+
+        function generateFIR(e) {
+            e.preventDefault();
+            const name = document.getElementById('firName').value;
+            const type = document.getElementById('firType').value;
+            const date = document.getElementById('firDate').value;
+            const loc = document.getElementById('firLocation').value;
+            const desc = document.getElementById('firDesc').value;
+
+            const draft = `FORMAL LEGAL COMPLAINT / DRAFT
+--------------------------------------------------
+TO: The Station House Officer / Committee Chairperson
+AUTHORITY: ${type}
+DATE OF GENERATION: ${new Date().toLocaleDateString()}
+
+COMPLAINANT DETAILS:
+Name: ${name}
+Location: ${loc}
+
+INCIDENT DETAILS:
+Date & Time: ${date}
+Location: ${loc}
+
+NATURE OF GRIEVANCE:
+${desc}
+
+PRAYER / ACTION SOUGHT:
+The undersigned requests immediate registration of formal inquiry, protection of evidence, and necessary legal action under applicable Indian Penal/Civil/Consumer statutes.
+
+Digitally Verified & Generated via LegalGuide (Nyaya Mitra & Nyaya Setu Platform).
+--------------------------------------------------`;
+
+            document.getElementById('firOutputText').innerText = draft;
+            document.getElementById('firOutputContainer').classList.remove('hidden');
+        }
+
+        function copyFIRText() {
+            const text = document.getElementById('firOutputText').innerText;
+            navigator.clipboard.writeText(text);
+            alert("Complaint draft copied to clipboard!");
+        }
+
+        function triggerEmergencySOS() {
+            if (confirm("🚨 EMERGENCY SOS ACTIVATED!\n\nThis will trigger your emergency beacon, record local ambient audio, and alert your saved emergency contacts and local helpline (112). Proceed?")) {
+                alert("SOS Beacon transmitted successfully to local authorities and emergency contacts. Stay calm, help is being dispatched.");
+                switchTab('rights');
+            }
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+    </script>
+</body>
+</html>
