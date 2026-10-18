@@ -6,6 +6,8 @@
     <title>LegalGuide | Empowering Citizens, Ensuring Justice</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -618,6 +620,12 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
+        // Initialize Supabase Client
+const SUPABASE_URL = 'https://djbxcvkhhxqfdashqto.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_Dr0owgA9kKTrqJgWHfBXag_mEpQ2vTD';
+
+const { createClient } = supabase;
+const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         function switchTab(tabId) {
             const tabs = ['dashboard', 'chat', 'rights', 'lawyers', 'docs'];
             tabs.forEach(t => {
@@ -746,12 +754,30 @@
             if (!text) return;
 
             appendUserMessage(text);
+            saveGrievanceToDatabase(text);
             input.value = '';
 
             setTimeout(() => {
                 generateAIResponse(text);
             }, 800);
         }
+        async function saveGrievanceToDatabase(userQuery, draftText = '', language = 'English') {
+  const { data, error } = await _supabase
+    .from('grievances')
+    .insert([
+      { 
+        user_query: userQuery, 
+        draft_content: draftText,
+        language: language 
+      }
+    ]);
+
+  if (error) {
+    console.error('Error saving to Supabase:', error.message);
+  } else {
+    console.log('Successfully saved grievance:', data);
+  }
+}
 
         function sendQuickPrompt(promptText) {
             switchTab('chat');
