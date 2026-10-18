@@ -6,8 +6,6 @@
     <title>LegalGuide | Empowering Citizens, Ensuring Justice</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Supabase JS Client -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -620,12 +618,6 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Initialize Supabase Client
-const SUPABASE_URL = 'https://djbxcvkhhxqfdashqto.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_Dr0owgA9kKTrqJgWHfBXag_mEpQ2vTD';
-const GEMINI_API_KEY = 'AQ.Ab8RN6LTBGJb3Gr4L8IQUj_HyQi5752THr8K_m_yshDIoOawNw';
-const { createClient } = supabase;
-const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         function switchTab(tabId) {
             const tabs = ['dashboard', 'chat', 'rights', 'lawyers', 'docs'];
             tabs.forEach(t => {
@@ -754,30 +746,12 @@ const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             if (!text) return;
 
             appendUserMessage(text);
-            saveGrievanceToDatabase(text);
             input.value = '';
 
             setTimeout(() => {
                 generateAIResponse(text);
             }, 800);
         }
-        async function saveGrievanceToDatabase(userQuery, draftText = '', language = 'English') {
-  const { data, error } = await _supabase
-    .from('grievances')
-    .insert([
-      { 
-        user_query: userQuery, 
-        draft_content: draftText,
-        language: language 
-      }
-    ]);
-
-  if (error) {
-    console.error('Error saving to Supabase:', error.message);
-  } else {
-    console.log('Successfully saved grievance:', data);
-  }
-}
 
         function sendQuickPrompt(promptText) {
             switchTab('chat');
@@ -818,45 +792,47 @@ const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             container.insertAdjacentHTML('beforeend', html);
             container.scrollTop = container.scrollHeight;
         }
-async function generateAIResponse(userPrompt) {
-  const systemInstruction = "You are Nyaya Mitra, an empathetic and helpful Indian legal AI assistant. Provide concise guidance under Indian law.";
 
-  try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{ text: `${systemInstruction}\n\nUser Question: ${userPrompt}` }]
-        }]
-      })
-    });
+        function generateAIResponse(query) {
+            const q = query.toLowerCase();
+            let response = "";
 
-    if (!response.ok) throw new Error("API response error");
+            if (q.includes('acid') || q.includes('assault') || q.includes('emergency') || q.includes('attack')) {
+                response = `
+                    <p class="font-bold text-rose-400"><i class="fa-solid fa-triangle-exclamation mr-1"></i> URGENT SAFETY PROTOCOL</p>
+                    <p>If you or someone else is facing an active physical attack or medical emergency, please dial <strong>112 immediately</strong> or rush to the nearest hospital.</p>
+                    <p class="text-xs bg-navy-800 p-2.5 rounded border border-navy-700 mt-2"><strong>Legal & Medical Safeguards:</strong><br>
+                    1. Under Supreme Court rulings, all hospitals must provide <strong>free immediate first aid and medical treatment</strong> without waiting for police clearance in heinous crimes.<br>
+                    2. Preserve all physical evidence and file an immediate FIR at the nearest police station.</p>
+                `;
+            } else if (q.includes('cyber') || q.includes('fraud') || q.includes('theft')) {
+                response = `
+                    <p class="font-bold text-accent-blue"><i class="fa-solid fa-laptop-code mr-1"></i> Nyaya Mitra Assessment: Cyber Fraud & Theft</p>
+                    <p>For financial online fraud, time is critical (the Golden Hour).</p>
+                    <p class="text-xs bg-navy-800 p-2.5 rounded border border-navy-700 mt-2"><strong>Recommended Immediate Actions:</strong><br>
+                    1. Call the National Cyber Crime Helpline at <strong>1930</strong> immediately to freeze fraudulent bank transactions.<br>
+                    2. File an online report on cybercrime.gov.in and generate our formal complaint draft in the Draft FIR tab.</p>
+                `;
+            } else if (q.includes('6 pm') || q.includes('sunset') || q.includes('police') || q.includes('detain')) {
+                response = `
+                    <p class="font-bold text-accent-blue"><i class="fa-solid fa-shield-halved mr-1"></i> Nyaya Mitra Assessment: Police Detention Rights</p>
+                    <p>Under <strong>BNSS Section 46(4)</strong>, no woman can be arrested after sunset and before sunrise except in extraordinary cases with written permission from a Judicial Magistrate First Class.</p>
+                    <p class="text-xs bg-navy-800 p-2.5 rounded border border-navy-700 mt-2"><strong>Recommended Immediate Actions:</strong><br>
+                    1. Demand to see the written Judicial Magistrate order.<br>
+                    2. Insist on the presence of a female police constable.<br>
+                    3. Request to call your lawyer or family immediately under Article 22.</p>
+                `;
+            } else {
+                response = `
+                    <p class="font-bold text-accent-blue"><i class="fa-solid fa-circle-info mr-1"></i> Nyaya Mitra Guidance</p>
+                    <p>Regarding your query on "${escapeHtml(query)}", our constitutional database indicates that you have full rights to legal protection and grievance redressal under Indian civil and criminal law.</p>
+                    <p class="text-xs text-slate-300 mt-1">Would you like me to connect you with a verified lawyer via Nyaya Setu or auto-generate a formal complaint document?</p>
+                `;
+            }
 
-    const data = await response.json();
-    const aiMessage = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (aiMessage) return aiMessage;
-    throw new Error("Empty AI message");
+            appendAIMessage(response);
+        }
 
-  } catch (err) {
-    console.warn("Falling back to local legal guidance:", err);
-    
-    const lower = userPrompt.toLowerCase();
-    if (lower.includes("police") || lower.includes("6 pm") || lower.includes("detention") || lower.includes("arrest")) {
-      return "📌 **Your Rights Regarding Police Detention:**\n\n1. **BNSS Section 46(4):** Women cannot be arrested after sunset (6 PM) and before sunrise without prior permission from a Judicial Magistrate.\n2. **Right to Know Grounds:** Under BNSS Section 35, police must inform you immediately of the exact reason for detention.\n3. **Legal Representation:** You have the legal right to consult and be defended by a legal practitioner of your choice.";
-    } else if (lower.includes("cyber") || lower.includes("fraud") || lower.includes("money") || lower.includes("theft") || lower.includes("scam")) {
-      return "📌 **Action Plan for Cyber Fraud & Financial Theft:**\n\n1. **National Helpline:** Immediately dial **1930** to report financial cyber fraud and freeze transactions.\n2. **Official Portal:** Register a formal complaint at **cybercrime.gov.in** within 24 hours.\n3. **Bank Notice:** Alert your bank branch immediately to block compromised accounts and cards.";
-    } else if (lower.includes("assault") || lower.includes("physical") || lower.includes("emergency") || lower.includes("danger")) {
-      return "📌 **Emergency & Legal Assistance Protocol:**\n\n1. **Immediate Safety:** Call **112** (National Emergency Helpline) or **1091** (Women Helpline) for prompt police support.\n2. **Medical Documentation:** Seek immediate medical evaluation at the nearest government hospital; the medical report serves as critical legal evidence.\n3. **FIR Registration:** File a Zero FIR at any nearby police station regardless of jurisdiction.";
-    } else {
-      return "📌 **Legal Guidance & Next Steps:**\n\n1. **Evidence Collection:** Preserve relevant receipts, documents, messages, or timestamps.\n2. **Protection Hub:** You can file an official grievance or draft a preliminary FIR directly using our **Protection Hub** tab above.\n3. **Legal Aid:** Free legal counsel is accessible through your District Legal Services Authority (DLSA) under the Legal Services Authorities Act.";
-    }
-  }
-}
- 
         function clearChat() {
             const container = document.getElementById('chatContainer');
             container.innerHTML = `
